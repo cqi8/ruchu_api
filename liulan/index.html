@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="index_files/bootstrap.css">
     <link rel="stylesheet" href="index_files/style.css">
     <script src='/index_files/zoomingPC.js'></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/lazysizes/5.3.0/lazysizes.min.js" async=""></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/lazysizes/5.3.0/lazysizes.min.js" async></script>
 </head>
 
 <body>
@@ -55,44 +55,10 @@
     // 显示当前的 API 地址 URL
     const apiUrlDiv = document.getElementById('api-url');
     const baseApiUrl = 'https://api.592.us.kg/api';
-    if (idParam) {
-        apiUrlDiv.innerHTML = `当前图片 API 地址 URL: <a href='${baseApiUrl}?id=${idParam}'>${baseApiUrl}?id=${idParam}</a>`;
-    } else {
-        apiUrlDiv.innerHTML = `当前图片 API 地址 URL: <a href='${baseApiUrl}'>${baseApiUrl}</a>`;
-    }
+    apiUrlDiv.innerHTML = `当前图片 API 地址 URL: <a href='${baseApiUrl}${idParam ? '?id=' + idParam : ''}'>${baseApiUrl}${idParam ? '?id=' + idParam : ''}</a>`;
 
-    // 如果没有传递参数，直接加载 img1.csv
-    if (!idParam) {
-        console.log('没有提供参数，加载 img1.csv');
-        loadImageCSV('/../data/img1.csv');
-    } else {
-        let filePath = `/../data/${idParam}.csv`; // 动态构建文件路径
-        // 检查是否为有效的文件名
-        if (/^[a-zA-Z0-9]+$/.test(idParam)) {
-            fetch(filePath)
-                .then(response => {
-                    if (!response.ok) {
-                        // 如果文件不存在，则加载 img1.csv
-                        console.error('文件不存在，加载 img1.csv');
-                        loadImageCSV('/../data/img1.csv');
-                    } else {
-                        return response.text();
-                    }
-                })
-                .then(data => {
-                    if (data) {
-                        const urls = data.split('\n').map(url => url.trim()).filter(url => url.length > 0);
-                        displayImages(urls);
-                    }
-                })
-                .catch(error => console.error('获取文件时出错:', error));
-        } else {
-            console.error('无效的参数，加载 img1.csv');
-            loadImageCSV('/../data/img1.csv');
-        }
-    }
-
-    function loadImageCSV(filePath) {
+    // 加载图片 CSV
+    const loadImages = (filePath) => {
         fetch(filePath)
             .then(response => {
                 if (!response.ok) throw new Error(`${filePath} 文件不存在`);
@@ -103,6 +69,17 @@
                 displayImages(urls);
             })
             .catch(error => console.error('获取文件时出错:', error));
+    };
+
+    // 加载特定的 CSV 文件或默认的 img1.csv
+    if (!idParam) {
+        console.log('没有提供参数，加载 img1.csv');
+        loadImages('/../data/img1.csv');
+    } else if (/^[a-zA-Z0-9]+$/.test(idParam)) {
+        loadImages(`/../data/${idParam}.csv`);
+    } else {
+        console.error('无效的参数，加载 img1.csv');
+        loadImages('/../data/img1.csv');
     }
 
     function displayImages(urls) {
@@ -126,14 +103,14 @@
             `;
             imgArrayDiv.appendChild(colDiv);
         });
-    }
 
-    // 确保在图片展示后初始化缩放功能
-    var zooming = new Zooming();
-    zooming.listen('.img-zoomable');
+        // 确保在图片展示后初始化缩放功能
+        var zooming = new Zooming();
+        zooming.listen('.img-zoomable');
+    }
 </script>
 
-    <script charset="UTF-8" id="LA_COLLECT" src="//sdk.51.la/js-sdk-pro.min.js"></script>
+<script charset="UTF-8" id="LA_COLLECT" src="//sdk.51.la/js-sdk-pro.min.js"></script>
 <script>LA.init({id:"3JyDN38xyGD2ZeaJ",ck:"3JyDN38xyGD2ZeaJ"})</script>
 </body>
 </html>
