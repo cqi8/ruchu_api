@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>随机舔狗段子 API</title>
+    <title>随机舔狗段子 API--刷新一次变一次</title>
     <script>
         // 读取 CSV 数据
         async function fetchData() {
@@ -33,7 +33,8 @@
             } else {
                 // 随机显示一条句子
                 const randomSentence = getRandomSentence(sentences);
-                document.body.innerHTML = randomSentence + '</p>';
+       document.body.innerHTML = randomSentence + '</p>' + '</br>' + '<span style="color:red;">没看够就刷新一下</span>';
+
             }
         }
 
@@ -41,7 +42,7 @@
     </script>
 </head>
 <body>
-    <script charset="UTF-8" id="LA_COLLECT" src="//sdk.51.la/js-sdk-pro.min.js"></script>
+<script charset="UTF-8" id="LA_COLLECT" src="//sdk.51.la/js-sdk-pro.min.js"></script>
 <script>LA.init({id:"3JyDN38xyGD2ZeaJ",ck:"3JyDN38xyGD2ZeaJ"})</script>
 </body>
 </html>
