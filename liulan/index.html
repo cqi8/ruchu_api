@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <title>如初的图片API-预览页-KR</title>
+    <meta name="description" content="1">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="index_files/bootstrap.css">
+    <link rel="stylesheet" href="index_files/style.css">
+    <script src='/index_files/zoomingPC.js'></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/lazysizes/5.3.0/lazysizes.min.js" async=""></script>
+</head>
+
+<body>
+<main>
+    <section class="cta-area cta-bg" style="background-image: url(https://api.592.us.kg/api); padding-top: 80px; padding-bottom: 80px;">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-lg-10">
+                    <div class="section-title white-title text-center mb-15">
+                        <h2>如初的<span>API</span></h2>
+                        <p>(HK)页面为懒加载，向下滑动加载图片</p>
+                        
+                        <div id="api-url"></div><br>
+                        <button type='button' onclick='window.location.href = "https://api.592.us.kg"'>返回首页</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="top-courses pt-110 pb-70">
+        <div class="container" style="max-width: 1650px;">
+            <div id="imgarray" class="row top-courses-active">
+                <!-- 图片将通过 JavaScript 动态添加到这个 div 中 -->
+            </div>
+            <div class="container">
+                <div class="row justify-content-center">
+                    <div class="col-lg-10">
+                        <div class="cta-btn text-center">
+                            到底了捏
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</main>
+
+<script>
+    // 获取 URL 中的 id 参数
+    const urlParams = new URLSearchParams(window.location.search);
+    const idParam = urlParams.get('id');
+
+    // 显示当前的 API 地址 URL
+    const apiUrlDiv = document.getElementById('api-url');
+    const baseApiUrl = 'https://api.592.us.kg/api';
+    if (idParam) {
+        apiUrlDiv.innerHTML = `当前图片 API 地址 URL: <a href='${baseApiUrl}?id=${idParam}'>${baseApiUrl}?id=${idParam}</a>`;
+    } else {
+        apiUrlDiv.innerHTML = `当前图片 API 地址 URL: <a href='${baseApiUrl}'>${baseApiUrl}</a>`;
+    }
+
+    // 如果没有传递参数，直接加载 img1.csv
+    if (!idParam) {
+        console.log('没有提供参数，加载 img1.csv');
+        loadImageCSV('/../data/img1.csv');
+    } else {
+        let filePath = `/../data/${idParam}.csv`; // 动态构建文件路径
+        // 检查是否为有效的文件名
+        if (/^[a-zA-Z0-9]+$/.test(idParam)) {
+            fetch(filePath)
+                .then(response => {
+                    if (!response.ok) {
+                        // 如果文件不存在，则加载 img1.csv
+                        console.error('文件不存在，加载 img1.csv');
+                        loadImageCSV('/../data/img1.csv');
+                    } else {
+                        return response.text();
+                    }
+                })
+                .then(data => {
+                    if (data) {
+                        const urls = data.split('\n').map(url => url.trim()).filter(url => url.length > 0);
+                        displayImages(urls);
+                    }
+                })
+                .catch(error => console.error('获取文件时出错:', error));
+        } else {
+            console.error('无效的参数，加载 img1.csv');
+            loadImageCSV('/../data/img1.csv');
+        }
+    }
+
+    function loadImageCSV(filePath) {
+        fetch(filePath)
+            .then(response => {
+                if (!response.ok) throw new Error(`${filePath} 文件不存在`);
+                return response.text();
+            })
+            .then(data => {
+                const urls = data.split('\n').map(url => url.trim()).filter(url => url.length > 0);
+                displayImages(urls);
+            })
+            .catch(error => console.error('获取文件时出错:', error));
+    }
+
+    function displayImages(urls) {
+        const imgArrayDiv = document.getElementById('imgarray');
+        imgArrayDiv.innerHTML = ''; // 清空之前的内容
+
+        // 随机打乱 urls 数组
+        const shuffledUrls = urls.sort(() => Math.random() - 0.5);
+        
+        // 遍历所有随机打乱的图片地址并添加到页面
+        shuffledUrls.forEach(url => {
+            const colDiv = document.createElement('div');
+            colDiv.className = 'col-xl-3 col-lg-4 col-sm-6 grid-item grid-sizer cat-three cat-four cat-two';
+
+            colDiv.innerHTML = `
+                <div class="top-courses-item mb-50" style="margin-bottom: 10px">
+                    <div class="top-courses-thumb">
+                        <img class="img-zoomable lazyload" data-src="${url}" src="index_files/2.gif" alt="">
+                    </div>
+                </div>
+            `;
+            imgArrayDiv.appendChild(colDiv);
+        });
+    }
+
+    // 确保在图片展示后初始化缩放功能
+    var zooming = new Zooming();
+    zooming.listen('.img-zoomable');
+</script>
+
+</body>
+</html>
