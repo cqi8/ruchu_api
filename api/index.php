@@ -6,12 +6,11 @@ function has_query($query)
 {
     return isset($_GET[$query]);
 }
-// 初始化imgs_array
-$imgs_array = array();
-$id_param = has_query('id') ? $_GET['id'] : ""; // 获取id参数
 
-// 根据id参数读取相应的CSV文件
- 
+// 初始化 imgs_array
+$imgs_array = array();
+$id_param = has_query('id') ? $_GET['id'] : ""; // 获取 id 参数
+
 // 构建文件路径
 $file_path = __DIR__ . '/../data/' . $id_param . '.csv';
 
@@ -22,6 +21,7 @@ if (file_exists($file_path)) {
     // 如果文件不存在，默认返回 img1.csv 的内容
     $imgs_array = file(__DIR__ . '/../data/img1.csv', FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
 }
+
 if (count($imgs_array) === 0) {
     $imgs_array = array('https://http.cat/503');
 }
