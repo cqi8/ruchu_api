@@ -39,6 +39,17 @@
                     <div class="col-lg-10">
                         <div class="cta-btn text-center">
                             到底了捏
+		 
+		  <ul style="display: flex; flex-wrap: nowrap; list-style-type: none; padding: 0; margin: 0;">
+	     友情链接:  
+   <li  style="margin-right: 10px;"><a href="https://58.linkpc.net" target="_blank">免费API接口</a></li>
+    <li  style="margin-right: 10px;"><a href="http://ruchu888.ysepan.com/" target="_blank">如初的网盘</a></li>
+    <li  style="margin-right: 10px;"><a href="http://wcq.us.kg/" target="_blank">传奇知识</a></li>
+    <li  style="margin-right: 10px;"><a href="https://api.592.us.kg/" target="_blank">随机图片API</a></li>
+    <li  style="margin-right: 10px;"><a href="https://img.592.us.kg/" target="_blank">图床上传</a></li>
+	    <li  style="margin-right: 10px;"><a href="https://592.us.kg" target="_blank">如初的博客</a></li>
+</ul>
+	  
                         </div>
                     </div>
                 </div>
@@ -46,7 +57,6 @@
         </div>
     </section>
 </main>
-
 <script>
     // 获取 URL 中的 id 参数
     const urlParams = new URLSearchParams(window.location.search);
@@ -70,7 +80,6 @@ const loadImages = (filePath) => {
         })
         .catch(error => console.error('获取文件时出错:', error));
 };
-
 // 加载特定的 CSV 文件或默认的 img1.csv
 if (!idParam) {
     console.log('没有提供参数，加载 img1.csv');
@@ -81,15 +90,12 @@ if (!idParam) {
     console.error('无效的参数，加载 img1.csv');
     loadImages('/../data/img1.csv');
 }
-
-
     function displayImages(urls) {
         const imgArrayDiv = document.getElementById('imgarray');
         imgArrayDiv.innerHTML = ''; // 清空之前的内容
 
         // 随机打乱 urls 数组
         const shuffledUrls = urls.sort(() => Math.random() - 0.5);
-        
         // 遍历所有随机打乱的图片地址并添加到页面
         shuffledUrls.forEach(url => {
             const colDiv = document.createElement('div');
@@ -104,7 +110,6 @@ if (!idParam) {
             `;
             imgArrayDiv.appendChild(colDiv);
         });
-
         // 确保在图片展示后初始化缩放功能
         var zooming = new Zooming();
         zooming.listen('.img-zoomable');
